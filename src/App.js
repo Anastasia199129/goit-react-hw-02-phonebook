@@ -2,7 +2,7 @@ import React from 'react';
 import { Component } from 'react';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
-import './App.css';
+import s from './App.css';
 import ContactForm from './components/contactForm/ContactForm';
 import Filter from './components/filter/Filter';
 import ContactList from './components/contactList/ContactList';
@@ -48,7 +48,7 @@ class App extends Component {
       contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
     );
     return (
-      <div>
+      <div className={s.container}>
         <Title text="Phoneboock" />
         <ContactForm propOnSubmit={this.formSubmitHendler} list={this.state.contacts} />
         <Title text="Contacts" />

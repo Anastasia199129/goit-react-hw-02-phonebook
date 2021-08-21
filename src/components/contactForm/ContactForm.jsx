@@ -1,6 +1,9 @@
 import React from 'react'
 import { Component } from "react";
 import PropTypes from 'prop-types'
+import style from './contactForm.module.css'
+
+
 
 class ContactForm extends Component{
   static propTypes = {
@@ -36,28 +39,32 @@ class ContactForm extends Component{
     render() {
         const{name, number}= this.state
          return (<form onSubmit={this.onSubmit}>
-        <label> Name
+        <label className={style.label}> Name
     <input
+    className={style.input}
       type="text"
       name="name"
       onChange={this.handleChange}
       value={name}
       pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-      title="Name"
-      required
+     
+               required
+               placeholder="Name"
           /></label>
-             <label> Number
+             <label className={style.label}> Number
     <input
+    className={style.input}
       type="text"
       name="number"
       onChange={this.handleChange}
       value={number}
       pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-      title="Name"
-      required
+     
+               required
+               placeholder="Phone"
         /></label>
 
-        <button type="submit">Add contact</button>
+        <button className={style.button} type="submit">Add contact</button>
       </form>)
     }
 }
