@@ -1,12 +1,19 @@
 import React from 'react';
-import shortid from 'shortid';
-import './App.css';
 import { Component } from 'react';
-import Form from './components/form/Form';
-import Button from './components/button/Button';
+import shortid from 'shortid';
+import PropTypes from 'prop-types';
+import './App.css';
+import ContactForm from './components/contactForm/ContactForm';
 import Filter from './components/filter/Filter';
+import ContactList from './components/contactList/ContactList';
+import Title from './components/title/Title';
 
 class App extends Component {
+  static propTypes = {
+    contacts: PropTypes.array,
+    filter: PropTypes.string,
+  };
+
   state = {
     contacts: [
       { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
@@ -18,10 +25,11 @@ class App extends Component {
   };
 
   formSubmitHendler = data => {
-    console.log(data);
-    this.setState(prevState => ({
-      contacts: [{ id: shortid.generate(), ...data }, ...prevState.contacts],
-    }));
+    this.state.contacts.find(n => n.name === data.name)
+      ? alert(`${data.name} already exists`)
+      : this.setState(prevState => ({
+          contacts: [{ id: shortid.generate(), ...data }, ...prevState.contacts],
+        }));
   };
 
   onButtonDeleteClick = id => {
@@ -36,29 +44,16 @@ class App extends Component {
   };
 
   render() {
+    const filteredContacts = this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
+    );
     return (
       <div>
-        <h1>Phoneboock</h1>
-        <Form propOnSubmit={this.formSubmitHendler} />
-        <h2>Contacts</h2>
+        <Title text="Phoneboock" />
+        <ContactForm propOnSubmit={this.formSubmitHendler} list={this.state.contacts} />
+        <Title text="Contacts" />
         <Filter value={this.state.filter} onChange={this.onChangeFilter} />
-
-        <ul>
-          {this.state.contacts.map(({ name, number, id }) => {
-            return (
-              <li key={id}>
-                <p>{name}:</p>
-                <p>{number}</p>
-                <Button
-                  text="Delete"
-                  onClick={() => {
-                    this.onButtonDeleteClick(id);
-                  }}
-                />
-              </li>
-            );
-          })}
-        </ul>
+        <ContactList filtred={filteredContacts} onButtonDeleteClick={this.onButtonDeleteClick} />
       </div>
     );
   }
